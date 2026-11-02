@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Secret Quest: Royal Siblings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fefce8 0%, #f0fdf4 50%, #eff6ff 100%);
+    }
+    h1, h2, h3, .font-fun {
+      font-family: 'Fredoka', sans-serif;
+    }
+    .custom-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+    .btn-bounce {
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-bounce:hover {
+      transform: translateY(-3px) scale(1.01);
+    }
+    .btn-bounce:active {
+      transform: translateY(1px) scale(0.99);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between p-4 sm:p-6 md:p-10">
+
+  <!-- Header Header Header -->
+  <header class="max-w-4xl w-full mx-auto text-center mb-6">
+    <div class="inline-block bg-amber-100 text-amber-800 text-xs sm:text-sm font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-3 border border-amber-200">
+      ✨ Interactive Sibling Adventure
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-2">
+      The Secret Relic Hunt 🗝️
+    </h1>
+    <p class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto">
+      Help four royal siblings work together, talk things out, and find the ultimate hidden treasure without driving each other crazy!
+    </p>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="max-w-4xl w-full mx-auto bg-white/90 backdrop-blur-sm rounded-3xl p-5 sm:p-8 border border-slate-200 custom-shadow flex-1 flex flex-col justify-between relative overflow-hidden">
+    
+    <!-- Top Stats Bar -->
+    <div id="stats-bar" class="hidden grid-cols-3 gap-2 sm:gap-4 mb-6 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200">
+      <div class="text-center bg-white p-2 sm:p-3 rounded-xl border border-slate-100 shadow-sm">
+        <div class="text-xs uppercase font-bold text-rose-500 tracking-wider">🤝 Trust</div>
+        <div class="w-full bg-slate-100 rounded-full h-3 mt-1.5 overflow-hidden">
+          <div id="meter-trust" class="bg-rose-500 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
+        </div>
+        <span id="text-trust" class="text-xs sm:text-sm font-extrabold text-slate-700 mt-1 inline-block">50%</span>
+      </div>
+
+      <div class="text-center bg-white p-2 sm:p-3 rounded-xl border border-slate-100 shadow-sm">
+        <div class="text-xs uppercase font-bold text-emerald-600 tracking-wider">⚡ Teamwork</div>
+        <div class="w-full bg-slate-100 rounded-full h-3 mt-1.5 overflow-hidden">
+          <div id="meter-teamwork" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
+        </div>
+        <span id="text-teamwork" class="text-xs sm:text-sm font-extrabold text-slate-700 mt-1 inline-block">50%</span>
+      </div>
+
+      <div class="text-center bg-white p-2 sm:p-3 rounded-xl border border-slate-100 shadow-sm">
+        <div class="text-xs uppercase font-bold text-sky-600 tracking-wider">💡 Brains</div>
+        <div class="w-full bg-slate-100 rounded-full h-3 mt-1.5 overflow-hidden">
+          <div id="meter-brains" class="bg-sky-500 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
+        </div>
+        <span id="text-brains" class="text-xs sm:text-sm font-extrabold text-slate-700 mt-1 inline-block">50%</span>
+      </div>
+    </div>
+
+    <!-- Dynamic View Area -->
+    <div id="game-view" class="flex-1 flex flex-col justify-center">
+
+      <!-- STEP 1: Character Selection Screen -->
+      <div id="screen-select" class="space-y-6">
+        <div class="text-center max-w-lg mx-auto">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Pick Your Character</h2>
+          <p class="text-slate-600 text-sm sm:text-base">
+            Every sibling brings something different to the team. Who do you want to play as first?
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          
+          <!-- VIRA -->
+          <div onclick="selectHero('vira')" class="btn-bounce cursor-pointer bg-amber-50 hover:bg-amber-100 border-2 border-amber-200 hover:border-amber-400 p-4 sm:p-5 rounded-2xl flex items-center space-x-4">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-400 text-2xl sm:text-3xl flex items-center justify-center shrink-0 shadow-sm">
+              👑
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold text-slate-900">Vira</h3>
+                <span class="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-bold">The Leader</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">The Maharani & Stressed out older sister trying to hold everyone together. Likes being in control.</p>
+            </div>
+          </div>
+
+          <!-- RONAK -->
+          <div onclick="selectHero('ronak')" class="btn-bounce cursor-pointer bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 hover:border-purple-400 p-4 sm:p-5 rounded-2xl flex items-center space-x-4">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-purple-400 text-2xl sm:text-3xl flex items-center justify-center shrink-0 shadow-sm">
+              📚
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold text-slate-900">Ronak</h3>
+                <span class="text-xs bg-purple-200 text-purple-900 px-2 py-0.5 rounded-full font-bold">The Smarty</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Loves maps, books, and facts. Can be direct and bossy at times.</p>
+            </div>
+          </div>
+
+          <!-- KALEB -->
+          <div onclick="selectHero('kaleb')" class="btn-bounce cursor-pointer bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-200 hover:border-emerald-400 p-4 sm:p-5 rounded-2xl flex items-center space-x-4">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-400 text-2xl sm:text-3xl flex items-center justify-center shrink-0 shadow-sm">
+              🏹
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold text-slate-900">Kaleb</h3>
+                <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">The Lone Wolf</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Tough and quiet. Tries to fix everything by himself instead of asking for help.</p>
+            </div>
+          </div>
+
+          <!-- RIYA -->
+          <div onclick="selectHero('riya')" class="btn-bounce cursor-pointer bg-rose-50 hover:bg-rose-100 border-2 border-rose-200 hover:border-rose-400 p-4 sm:p-5 rounded-2xl flex items-center space-x-4">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-rose-400 text-2xl sm:text-3xl flex items-center justify-center shrink-0 shadow-sm">
+              ✨
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h3 class="text-lg font-bold text-slate-900">Riya</h3>
+                <span class="text-xs bg-rose-200 text-rose-900 px-2 py-0.5 rounded-full font-bold">The Wildcard</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Youngest sister with big ideas! Feels like no one takes her seriously.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STEP 2: Story Display Container -->
+      <div id="screen-story" class="hidden space-y-5">
+        <!-- Banner & Hero Badge -->
+        <div class="flex items-center justify-between bg-slate-100 p-3 sm:p-4 rounded-2xl border border-slate-200">
+          <div class="flex items-center space-x-3">
+            <span id="hero-emoji" class="text-2xl sm:text-3xl">👑</span>
+            <div>
+              <span id="hero-name" class="font-extrabold text-slate-900 text-base sm:text-lg">Vira</span>
+              <span id="hero-role" class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold ml-2">The Leader</span>
+            </div>
+          </div>
+          <button onclick="resetGame()" class="text-xs bg-white text-slate-500 hover:text-slate-800 font-bold px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm transition">
+            🔄 Switch Hero
+          </button>
+        </div>
+
+        <!-- Node Header & Text -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+          <h2 id="node-title" class="text-xl sm:text-2xl font-bold text-slate-900">Act I: Title</h2>
+          <p id="node-text" class="text-slate-700 text-base sm:text-lg leading-relaxed">Story description goes here...</p>
+        </div>
+
+        <!-- Consequences / Lesson Box (If present) -->
+        <div id="lesson-box" class="hidden p-4 rounded-2xl border space-y-1">
+          <div id="lesson-header" class="font-bold text-xs uppercase tracking-wider">💡 Key Takeaway</div>
+          <p id="lesson-text" class="text-sm sm:text-base font-semibold"></p>
+        </div>
+
+        <!-- Prompt Text -->
+        <div id="node-prompt" class="font-bold text-slate-800 text-base sm:text-lg pt-1">
+          What do you do next?
+        </div>
+
+        <!-- Choice Buttons Area -->
+        <div id="choices-container" class="space-y-3">
+          <!-- Dynamically filled with buttons -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer Footer Footer -->
+  <footer class="max-w-4xl w-full mx-auto text-center mt-6 text-xs text-slate-500 space-y-1">
+    <p>© Vasumathi Srinidhi - The Secret Relic Hunt • Made for Fun & Connection. All Rights Reserved.</p>
+    <p>The Secret Relic Hunt, including its code and design, may not be reproduced or distributed without permission.</p>
+  </footer>
+
+  <!-- Game Logic Script -->
+  <script>
+    // State Tracker
+    let state = {
+      hero: null,
+      trust: 50,
+      teamwork: 50,
+      brains: 50,
+      currentNode: null
+    };
+
+    // Story Trees for all 4 siblings
+    const storyData = {
+      vira: {
+        name: "Vira",
+        role: "The Leader",
+        emoji: "👑",
+        startNode: "vira_1",
+        nodes: {
+          vira_1: {
+            title: "Act 1: The Secret Map Mistake",
+            text: "You found a map showing where the Golden Sun Relic is hidden! But your last plan completely failed and got everyone stuck in a muddy pit that took days to clean. Now you need to decide how to pitch this new quest to your brothers and sister.",
+            prompt: "How do you tell your siblings about the new map?",
+            choices: [
+              {
+                text: "👑 Bark orders! 'I'm the oldest, follow me and don't ask questions!'",
+                trust: -15, teamwork: -20, brains: 0,
+                next: "vira_bossy",
+                lesson: "Giving orders without explaining makes people feel ignored and rebellious."
+              },
+              {
+                text: "❤️ Heart-to-Heart: 'I messed up last time. But look at this map, I need your help!'",
+                trust: +25, teamwork: +20, brains: +5,
+                next: "vira_honest",
+                lesson: "Admitting when you mess up builds instant trust. People love honesty!"
+              },
+              {
+                text: "🤫 Sneak around: Just whisper the plan to Ronak and leave Riya and Kaleb out.",
+                trust: -10, teamwork: -10, brains: +10,
+                next: "vira_secret",
+                lesson: "Secret side-chats make everyone else feel left out and suspicious."
+              }
+            ]
+          },
+          // PATH 1A: Bossy
+          vira_bossy: {
+            title: "Act 2: The Grumpy Squad",
+            text: "Everyone is walking behind you, but they are super grumpy. Kaleb is rolling his eyes, Riya is walking as slow as possible, and Ronak is mumbling to himself. You reach a giant wooden bridge, but it looks really shaky!",
+            prompt: "The bridge looks dangerous. What do you do?",
+            choices: [
+              {
+                text: "🛑 Pause and say: 'Hey... I'm sorry for being bossy earlier. Can we check this bridge together?'",
+                trust: +20, teamwork: +20, brains: +10,
+                next: "end_good",
+                lesson: "It's never too late to stop, say sorry, and ask for help!"
+              },
+              {
+                text: "🏃 Forward march! Force everyone to run across right now!",
+                trust: -30, teamwork: -30, brains: -20,
+                next: "end_bad",
+                lesson: "Ignoring red flags just to save face leads to total disaster."
+              }
+            ]
+          },
+          // PATH 1B: Honest
+          vira_honest: {
+            title: "Act 2: Teamwork in Action",
+            text: "Because you were honest, everyone is hyped! Kaleb grabs his rope, Ronak gets his reading glasses ready, and Riya spots a shortcut around a dark cave. Suddenly, a giant locked gate blocks the path with three different keyholes!",
+            prompt: "How do you handle the locked gate?",
+            choices: [
+              {
+                text: "🧩 Let everyone solve one part of the puzzle together.",
+                trust: +20, teamwork: +25, brains: +20,
+                next: "end_super",
+                lesson: "Combining everyone's strengths makes tough problems easy!"
+              },
+              {
+                text: "💪 Try to kick the gate open all by yourself to prove you're strong.",
+                trust: -5, teamwork: -10, brains: -15,
+                next: "end_ok",
+                lesson: "You don't have to carry the whole burden alone when you have a team."
+              }
+            ]
+          },
+          // PATH 1C: Secret
+          vira_secret: {
+            title: "Act 2: Whispers & Hurt Feelings",
+            text: "Riya catches you and Ronak whispering in the back. She stops walking and says, 'Why are you two keeping secrets from us? Aren't we a team?' Kaleb crosses his arms and agrees with her.",
+            prompt: "How do you respond to Riya?",
+            choices: [
+              {
+                text: "💬 'You're completely right Riya. Here is the map, let's look at it together.'",
+                trust: +20, teamwork: +20, brains: +5,
+                next: "end_good",
+                lesson: "Validating someone's feelings fixes misunderstandings quickly."
+              },
+              {
+                text: "🙄 'Stop making a big deal out of nothing, we're busy!'",
+                trust: -25, teamwork: -25, brains: -10,
+                next: "end_bad",
+                lesson: "Dismissing people's feelings makes them shut down and step away."
+              }
+            ]
+          }
+        }
+      },
+
+      ronak: {
+        name: "Ronak",
+        role: "The Smarty",
+        emoji: "📚",
+        startNode: "ronak_1",
+        nodes: {
+          ronak_1: {
+            title: "Act 1: The Danger Warning",
+            text: "While reading an ancient textbook, you realize the forest path your siblings are heading toward is full of hidden mud traps! But you were technically not supposed to be reading that private book...",
+            prompt: "How do you warn your siblings?",
+            choices: [
+              {
+                text: "📖 Tell the whole truth: 'I read the forbidden book, but careful! There are mud traps ahead!'",
+                trust: +15, teamwork: +15, brains: +20,
+                next: "ronak_truth",
+                lesson: "Owning up to broken rules makes people actually listen to your warnings."
+              },
+              {
+                text: "🔮 Make up a fake story: Pretend you had a 'magic vision' about mud so you do not get in trouble.",
+                trust: -20, teamwork: -10, brains: -10,
+                next: "ronak_lie",
+                lesson: "Fake stories confuse people and ruin your credibility when caught."
+              },
+              {
+                text: "🤐 Stay silent: Say nothing because you are scared of getting scolded.",
+                trust: -10, teamwork: -20, brains: -15,
+                next: "ronak_silent",
+                lesson: "Keeping important info to yourself can put the whole group in trouble."
+              }
+            ]
+          },
+          ronak_truth: {
+            title: "Act 2: Brains Meets Brawn",
+            text: "Vira gives you a quick stern look for reading the private book, but immediately thanks you! Kaleb uses his climbing rope to safely bypass the mud pit. Now you arrive at a room full of glowing colored buttons.",
+            prompt: "How do you figure out the button puzzle?",
+            choices: [
+              {
+                text: "🗣️ Explain the clues in simple words so Riya and Kaleb can help push the buttons.",
+                trust: +20, teamwork: +25, brains: +20,
+                next: "end_super",
+                lesson: "Smart ideas are only useful if you can explain them clearly to others!"
+              },
+              {
+                text: "🧠 Mumble math facts to yourself and refuse to explain what you're doing.",
+                trust: -10, teamwork: -15, brains: +5,
+                next: "end_ok",
+                lesson: "Talking over people's heads makes them feel left out and bored."
+              }
+            ]
+          },
+          ronak_lie: {
+            title: "Act 2: Caught in the Mud",
+            text: "Vira doesn't believe your 'magic vision' story and keeps walking. *SPLAT!* Kaleb steps straight into a waist-deep mud trap! Everyone is annoyed and dirty.",
+            prompt: "How do you fix this mess?",
+            choices: [
+              {
+                text: "🤝 Apologize for lying, explain the real book facts, and help pull Kaleb out.",
+                trust: +15, teamwork: +20, brains: +10,
+                next: "end_good",
+                lesson: "A quick, sincere apology can turn a terrible situation around."
+              },
+              {
+                text: "👉 Blame Kaleb for being clumsy and not watching his step.",
+                trust: -30, teamwork: -30, brains: -20,
+                next: "end_bad",
+                lesson: "Blaming others for your mistakes destroys group morale."
+              }
+            ]
+          },
+          ronak_silent: {
+            title: "Act 2: The Mud Disaster",
+            text: "Because you said nothing, the whole squad falls into the mud pit! Riya loses her shoes, and Vira is super stressed. Everyone asks: 'Ronak, didn't you know about this path?'",
+            prompt: "What do you say?",
+            choices: [
+              {
+                text: "😓 'I knew, but I was scared to tell you. I'm sorry. Here's how we get out.'",
+                trust: +10, teamwork: +10, brains: +10,
+                next: "end_good",
+                lesson: "It takes bravery to admit fear, but it helps everyone move forward."
+              },
+              {
+                text: "🙈 Pretend you knew nothing and look away nervously.",
+                trust: -20, teamwork: -20, brains: -20,
+                next: "end_bad",
+                lesson: "Double-down lying breaks trust permanently."
+              }
+            ]
+          }
+        }
+      },
+
+      kaleb: {
+        name: "Kaleb",
+        role: "The Lone Wolf",
+        emoji: "🏹",
+        startNode: "kaleb_1",
+        nodes: {
+          kaleb_1: {
+            title: "Act 1: The Sneaky Scout",
+            text: "While hiking ahead, you spot a wild mountain goat guarding the narrow canyon trail. You're super tough and could try to wrestle past it alone, or you could go back and tell the rest of the crew.",
+            prompt: "How do you handle the obstacle?",
+            choices: [
+              {
+                text: "🏕️ Head back and team up: 'Hey guys, big goat ahead. Let's make a plan!'",
+                trust: +20, teamwork: +25, brains: +10,
+                next: "kaleb_team",
+                lesson: "Asking for help isn't weakness—it's smart strategy!"
+              },
+              {
+                text: "🤠 Solo mode: Try to deal with the goat all by yourself without telling anyone.",
+                trust: -15, teamwork: -15, brains: -5,
+                next: "kaleb_solo",
+                lesson: "Going solo leaves your team wondering where you went and worrying."
+              },
+              {
+                text: "🍎 Use Riya's snack pack as bait without asking her first.",
+                trust: -25, teamwork: -20, brains: 0,
+                next: "kaleb_bait",
+                lesson: "Taking people's stuff without asking breaks personal trust fast."
+              }
+            ]
+          },
+          kaleb_team: {
+            title: "Act 2: The Distraction Plan",
+            text: "Riya pulls out some apples from her bag to feed the goat, while Vira safely guides everyone around it. It worked perfectly! Now you stand before a heavy stone door.",
+            prompt: "The stone door is very heavy. What's your move?",
+            choices: [
+              {
+                text: "🏋️ Coordinate a '1... 2... 3... PUSH!' effort with all four siblings.",
+                trust: +20, teamwork: +25, brains: +15,
+                next: "end_super",
+                lesson: "Working together achieves things no single person can do alone."
+              },
+              {
+                text: "😤 Push alone until you hurt your back just to show off.",
+                trust: -5, teamwork: -10, brains: -10,
+                next: "end_ok",
+                lesson: "Pride often gets in the way of simple teamwork."
+              }
+            ]
+          },
+          kaleb_solo: {
+            title: "Act 2: The Goat Chase",
+            text: "The goat chases you down the hill! You trip and drop your backpack. Your siblings run up, breathless and worried out of their minds.",
+            prompt: "Vira yells, 'Where were you?!' How do you reply?",
+            choices: [
+              {
+                text: "😮‍💨 'My bad! I tried to be a hero alone instead of relying on you guys.'",
+                trust: +20, teamwork: +20, brains: +10,
+                next: "end_good",
+                lesson: "Admitting your limits helps you reconnect with people who care."
+              },
+              {
+                text: "😒 'I don't need your help, I had it under control!' (You didn't).",
+                trust: -25, teamwork: -25, brains: -20,
+                next: "end_bad",
+                lesson: "Stubborn pride pushes away the people who want to support you."
+              }
+            ]
+          },
+          kaleb_bait: {
+            title: "Act 2: The Angry Sister",
+            text: "The goat eats the apples, but Riya is furious! 'You stole my favorite apples without asking me!' Now everyone is arguing instead of looking for the relic.",
+            prompt: "How do you fix things with Riya?",
+            choices: [
+              {
+                text: "🎁 'I'm really sorry Riya. Next time I'll ask first. I owe you my dessert tonight!'",
+                trust: +25, teamwork: +20, brains: +5,
+                next: "end_good",
+                lesson: "A real apology includes fixing what you broke or replacing what you took."
+              },
+              {
+                text: "🤷 'It was just apples, get over it.'",
+                trust: -30, teamwork: -30, brains: -15,
+                next: "end_bad",
+                lesson: "Minimizing someone's feelings makes small problems turn into big rivalries."
+              }
+            ]
+          }
+        }
+      },
+
+      riya: {
+        name: "Riya",
+        role: "The Wildcard",
+        emoji: "✨",
+        startNode: "riya_1",
+        nodes: {
+          riya_1: {
+            title: "Act 1: The Hidden Shortcut",
+            text: "You notice a cool glowing tunnel hidden behind some hanging vines! It looks like a huge shortcut to the relic room, but your older siblings are busy arguing about map directions and ignoring you.",
+            prompt: "How do you get them to listen?",
+            choices: [
+              {
+                text: "💡 Speak up clearly & confidently: 'Hey everyone, check out this shortcut I found!'",
+                trust: +20, teamwork: +20, brains: +20,
+                next: "riya_confident",
+                lesson: "Speaking up with confidence makes people take your ideas seriously!"
+              },
+              {
+                text: "🤫 Keep quiet: 'They never listen to me anyway, I'll just keep it to myself.'",
+                trust: -10, teamwork: -15, brains: -10,
+                next: "riya_quiet",
+                lesson: "Staying silent deprives your team of your unique brilliance."
+              },
+              {
+                text: "🚶‍♀️ Sneak into the tunnel by yourself without telling anyone.",
+                trust: -20, teamwork: -20, brains: -5,
+                next: "riya_wander",
+                lesson: "Wandering off without communication causes panic."
+              }
+            ]
+          },
+          riya_confident: {
+            title: "Act 2: Leading the Way",
+            text: "Vira and Ronak are amazed! 'Great catch, Riya!' You lead the team down the glowing tunnel safely, skipping the dark scary caves. At the end of the tunnel, you reach the Golden Relic Vault!",
+            prompt: "The relic is sitting on a delicate pedestal. Who picks it up?",
+            choices: [
+              {
+                text: "🙌 Suggest everyone put one hand on the relic box and lift it together!",
+                trust: +25, teamwork: +25, brains: +15,
+                next: "end_super",
+                lesson: "Sharing the winning moment makes victory ten times sweeter!"
+              },
+              {
+                text: "🏆 Grab it fast and yell: 'I found it so it's MINE!'",
+                trust: -15, teamwork: -15, brains: -5,
+                next: "end_ok",
+                lesson: "Turning a group win into a solo trophy causes instant resentment."
+              }
+            ]
+          },
+          riya_quiet: {
+            title: "Act 2: The Long Way 'Round",
+            text: "Because you stayed quiet, the family takes the long, boring road uphill for 3 whole hours. Everyone is exhausted and grumpy. You feel bad because you knew a shortcut.",
+            prompt: "Do you tell them about the shortcut now?",
+            choices: [
+              {
+                text: "🙋‍♀️ 'I actually saw a shortcut earlier... I'll speak up next time, I promise!'",
+                trust: +15, teamwork: +15, brains: +10,
+                next: "end_good",
+                lesson: "It's okay if you missed your chance earlier—speak up as soon as you can!"
+              },
+              {
+                text: "🤐 Stay silent forever and pout in the back.",
+                trust: -20, teamwork: -20, brains: -20,
+                next: "end_bad",
+                lesson: "Holding onto resentment hurts you more than anyone else."
+              }
+            ]
+          },
+          riya_wander: {
+            title: "Act 2: Lost in the Tunnel",
+            text: "You went down the tunnel alone, but it gets super dark and scary! You hear your siblings shouting your name from far away, sounding super worried.",
+            prompt: "What do you do?",
+            choices: [
+              {
+                text: "📢 Shout back: 'I'm over here! I went ahead without telling you, I'm sorry!'",
+                trust: +15, teamwork: +20, brains: +10,
+                next: "end_good",
+                lesson: "Calling for help when you're in over your head is the smartest move."
+              },
+              {
+                text: "👻 Hide in the dark and wait for them to find you.",
+                trust: -25, teamwork: -25, brains: -20,
+                next: "end_bad",
+                lesson: "Hiding your location during a crisis makes things twice as dangerous."
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    // Shared Dynamic Endings
+    const globalEndings = {
+      end_super: {
+        title: "🌟 Perfect Victory: The United Relic Squad!",
+        text: "YOU DID IT! The four siblings unlock the Golden Relic together! Because everyone communicated clearly, listened to each other, and admitted their mistakes, your bond as a family is stronger than ever. Ashoka Kingdom has 4 amazing heroes!",
+        emoji: "🎉",
+        type: "super"
+      },
+      end_good: {
+        title: "✨ Great Success: Lessons Learned!",
+        text: "You found the relic! Things got a little bumpy and there were some arguments, but open talking and sincere apologies saved the day. The siblings head home laughing and sharing stories.",
+        emoji: "🏆",
+        type: "good"
+      },
+      end_ok: {
+        title: "⚖️ Mixed Ending: You Got the Treasure, But...",
+        text: "You managed to reach the relic, but the squad is pretty exhausted and annoyed with each other. You completed the mission, but building real trust is going to take a bit more work.",
+        emoji: "🤝",
+        type: "ok"
+      },
+      end_bad: {
+        title: "💔 Mission Failed: Squad Breakdown",
+        text: "Oh no! Secret-keeping, bossy shouting, and zero communication completely broke the team apart. Everyone went home upset, and the relic remains hidden in the wilderness.",
+        emoji: "💥",
+        type: "bad"
+      }
+    };
+
+    // --- GAME ACTIONS ---
+
+    function selectHero(heroKey) {
+      state.hero = storyData[heroKey];
+      state.trust = 50;
+      state.teamwork = 50;
+      state.brains = 50;
+
+      // Update UI Elements
+      document.getElementById('screen-select').classList.add('hidden');
+      document.getElementById('screen-story').classList.remove('hidden');
+      document.getElementById('stats-bar').classList.remove('hidden');
+      document.getElementById('stats-bar').classList.add('grid');
+
+      document.getElementById('hero-emoji').textContent = state.hero.emoji;
+      document.getElementById('hero-name').textContent = state.hero.name;
+      document.getElementById('hero-role').textContent = state.hero.role;
+
+      updateStatsUI();
+      loadNode(state.hero.startNode);
+    }
+
+    function updateStatsUI() {
+      // Clamp stats 0-100
+      state.trust = Math.max(0, Math.min(100, state.trust));
+      state.teamwork = Math.max(0, Math.min(100, state.teamwork));
+      state.brains = Math.max(0, Math.min(100, state.brains));
+
+      document.getElementById('meter-trust').style.width = state.trust + '%';
+      document.getElementById('text-trust').textContent = state.trust + '%';
+
+      document.getElementById('meter-teamwork').style.width = state.teamwork + '%';
+      document.getElementById('text-teamwork').textContent = state.teamwork + '%';
+
+      document.getElementById('meter-brains').style.width = state.brains + '%';
+      document.getElementById('text-brains').textContent = state.brains + '%';
+    }
+
+    function loadNode(nodeKey) {
+      const container = document.getElementById('choices-container');
+      container.innerHTML = '';
+
+      // Check if ending node
+      if (globalEndings[nodeKey]) {
+        renderEnding(globalEndings[nodeKey]);
+        return;
+      }
+
+      const node = state.hero.nodes[nodeKey];
+      state.currentNode = node;
+
+      document.getElementById('node-title').textContent = node.title;
+      document.getElementById('node-text').textContent = node.text;
+      document.getElementById('node-prompt').textContent = node.prompt;
+      document.getElementById('node-prompt').classList.remove('hidden');
+
+      // Lesson box hiding/showing
+      const lessonBox = document.getElementById('lesson-box');
+      if (node.lesson) {
+        lessonBox.classList.remove('hidden');
+        document.getElementById('lesson-text').textContent = node.lesson;
+        document.getElementById('lesson-box').className = "p-4 rounded-2xl border space-y-1 bg-amber-50 border-amber-200 text-amber-900";
+        document.getElementById('lesson-header').textContent = "💡 Communication Tip";
+      } else {
+        lessonBox.classList.add('hidden');
+      }
+
+      // Render Choice Buttons
+      node.choices.forEach((choice) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-bounce w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-800 bg-white hover:bg-slate-50 font-bold text-slate-800 text-sm sm:text-base flex justify-between items-center group shadow-sm";
+        btn.innerHTML = `
+          <span>${choice.text}</span>
+          <span class="text-slate-400 group-hover:text-slate-800 transition-transform group-hover:translate-x-1 ml-2 text-xl">➔</span>
+        `;
+        btn.onclick = () => handleChoice(choice);
+        container.appendChild(btn);
+      });
+    }
+
+    function handleChoice(choice) {
+      // Adjust Stats
+      state.trust += choice.trust;
+      state.teamwork += choice.teamwork;
+      state.brains += choice.brains;
+      updateStatsUI();
+
+      // Show temporary lesson feedback if choice has lesson, then load next node
+      const lessonBox = document.getElementById('lesson-box');
+      if (choice.lesson) {
+        lessonBox.classList.remove('hidden');
+        document.getElementById('lesson-text').textContent = choice.lesson;
+        
+        // Dynamic colors based on positive/negative
+        if (choice.trust + choice.teamwork >= 0) {
+          lessonBox.className = "p-4 rounded-2xl border space-y-1 bg-emerald-50 border-emerald-200 text-emerald-900 mb-2";
+          document.getElementById('lesson-header').textContent = "🌟 Winning Communication Move!";
+        } else {
+          lessonBox.className = "p-4 rounded-2xl border space-y-1 bg-rose-50 border-rose-200 text-rose-900 mb-2";
+          document.getElementById('lesson-header').textContent = "⚠️ Tough Lesson Learned";
+        }
+      }
+
+      // Load next story step
+      loadNode(choice.next);
+    }
+
+    function renderEnding(ending) {
+      document.getElementById('node-title').textContent = ending.emoji + " " + ending.title;
+      document.getElementById('node-text').textContent = ending.text;
+      document.getElementById('node-prompt').classList.add('hidden');
+      
+      const lessonBox = document.getElementById('lesson-box');
+      lessonBox.classList.remove('hidden');
+      
+      let endColorClass = "bg-emerald-50 border-emerald-200 text-emerald-900";
+      if (ending.type === 'bad') endColorClass = "bg-rose-50 border-rose-200 text-rose-900";
+      if (ending.type === 'ok') endColorClass = "bg-amber-50 border-amber-200 text-amber-900";
+
+      lessonBox.className = "p-4 sm:p-5 rounded-2xl border space-y-2 " + endColorClass;
+      document.getElementById('lesson-header').textContent = "📊 Final Stats Summary";
+      document.getElementById('lesson-text').innerHTML = `
+        <div class="grid grid-cols-3 gap-2 text-center pt-1 font-extrabold text-sm sm:text-base">
+          <div>Trust: ${state.trust}%</div>
+          <div>Teamwork: ${state.teamwork}%</div>
+          <div>Brains: ${state.brains}%</div>
+        </div>
+      `;
+
+      const container = document.getElementById('choices-container');
+      container.innerHTML = `
+        <button onclick="resetGame()" class="btn-bounce w-full p-4 sm:p-5 rounded-2xl bg-slate-900 text-white font-extrabold text-base sm:text-lg shadow-md hover:bg-slate-800 text-center">
+          🔄 Play Again with Another Sibling!
+        </button>
+      `;
+    }
+
+    function resetGame() {
+      document.getElementById('screen-story').classList.add('hidden');
+      document.getElementById('stats-bar').classList.add('hidden');
+      document.getElementById('stats-bar').classList.remove('grid');
+      document.getElementById('screen-select').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
